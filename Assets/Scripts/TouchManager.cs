@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TouchManagerScript : MonoBehaviour
+public class TouchManager : MonoBehaviour
 {
     [SerializeField] private GameObject player;
 
@@ -33,5 +33,6 @@ public class TouchManagerScript : MonoBehaviour
         Vector3 position = Camera.main.ScreenToWorldPoint(touchPositionAction.ReadValue<Vector2>());
         position.z = player.transform.position.z;
         player.transform.position = position;
+        Debug.Log(player.transform.position.x + ", " + player.transform.position.y + ", " + player.transform.position.z);
     }
 }
