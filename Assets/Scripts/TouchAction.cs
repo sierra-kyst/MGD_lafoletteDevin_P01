@@ -29,7 +29,7 @@ public partial class @TouchAction : IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""TouchPosition"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""05979cf2-03c8-4e89-8849-9dfebbac9c28"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
