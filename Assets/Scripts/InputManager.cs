@@ -15,6 +15,7 @@ public class InputManager : Singleton<InputManager>
     private void Awake()
     {
         touchControls = new TouchAction();
+        EnhancedTouchSupport.Enable();
     }
 
     private void OnEnable()
