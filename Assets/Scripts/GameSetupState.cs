@@ -8,7 +8,7 @@ public class GameSetupState : State
     private GameFSM _stateMachine;
     private GameController _controller;
 
-    public Button endlessMode;
+    public ButtonToStateInteraction bTSI;
 
     // this is our 'constructor', called when this state is created
     public GameSetupState(GameFSM stateMachine, GameController controller)
@@ -22,7 +22,6 @@ public class GameSetupState : State
     {
         base.Enter();
         Debug.Log("SetupState");
-        endlessMode = GameObject.Find("EndlessMode_btn").GetComponent<Button>();
     }
 
     public override void Exit()
@@ -39,10 +38,9 @@ public class GameSetupState : State
     {
         base.Tick();
         //_stateMachine.ChangeState(_stateMachine.PlayState);
-        endlessMode.onClick.AddListener(GetOut);
     }
 
-    private void GetOut()
+    public void GetOut()
     {
         _stateMachine.ChangeState(_stateMachine.PlayState);
     }
