@@ -25,19 +25,19 @@ public class GameCombatState : State
         Debug.Log("CombatState");
         timer = 0;
         trail = GameObject.Find("Trail");
-        if(playState.combatMode == 1)
+        /*if(playState.combatMode == 1)
         {
             trail.SetActive(true);
-        }
+        }*/
         damagableEnemy = true;
     }
 
     public override void Exit()
     {
-        if (playState.combatMode == 1)
+        /*if (playState.combatMode == 1)
         {
             trail.SetActive(false);
-        }
+        }*/
         damagableEnemy = false;
         base.Exit();
     }
@@ -48,19 +48,19 @@ public class GameCombatState : State
         //This is where I differentiate the combat modes' input methods
         if (damagableEnemy == true)
         {
-            if (playState.combatMode == 1)
-            {
+            //if (playState.combatMode == 1)
+            //{
                 DamageEnemy();
                 Debug.Log("Enemy's Health: " + enemyManager.enemyHealth);
-            }
-            else if (playState.combatMode == 2)
-            {
+            //}
+            //else if (playState.combatMode == 2)
+            //{
 
-            }
-            else if (playState.combatMode == 3)
-            {
+            //}
+            //else if (playState.combatMode == 3)
+            //{
 
-            }
+            //}
         }
     }
 

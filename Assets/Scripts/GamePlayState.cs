@@ -30,6 +30,7 @@ public class GamePlayState : State
         base.Enter();
         Debug.Log("PlayState");
         //Instantiate(enemy);
+        
         playerTurnUI = GameObject.Find("PlayerTurn_pnl");
         playerTurnUI.SetActive(true);
         //swordAttack = GameObject.Find("Sword_btn").GetComponent<Button>();
@@ -50,7 +51,7 @@ public class GamePlayState : State
     public override void Tick()
     {
         base.Tick();
-        //bTSI.swordBtn.onClick.AddListener(Sword);
+        //swordAttack.onClick.AddListener(Sword);
         sniperAttack.onClick.AddListener(Sniper);
         spellAttack.onClick.AddListener(Spell);
     }
