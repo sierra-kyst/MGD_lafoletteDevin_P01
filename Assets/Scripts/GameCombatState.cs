@@ -50,7 +50,7 @@ public class GameCombatState : State
         {
             if (playState.combatMode == 1)
             {
-                enemyManager.enemyHealth -= partyManager.ninjaDamage;
+                DamageEnemy();
                 Debug.Log("Enemy's Health: " + enemyManager.enemyHealth);
             }
             else if (playState.combatMode == 2)
@@ -76,5 +76,10 @@ public class GameCombatState : State
         {
             _stateMachine.ChangeState(_stateMachine.WinState);
         }
+    }
+
+    private void DamageEnemy()
+    {
+        enemyManager.enemyHealth -= partyManager.ninjaDamage;
     }
 }

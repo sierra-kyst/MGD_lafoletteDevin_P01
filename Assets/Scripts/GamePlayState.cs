@@ -13,6 +13,8 @@ public class GamePlayState : State
     public Button sniperAttack;
     public Button spellAttack;
 
+    public ButtonToStateInteraction bTSI;
+
     public int combatMode;
 
     public GameObject enemy;
@@ -30,7 +32,7 @@ public class GamePlayState : State
         //Instantiate(enemy);
         playerTurnUI = GameObject.Find("PlayerTurn_pnl");
         playerTurnUI.SetActive(true);
-        swordAttack = GameObject.Find("Sword_btn").GetComponent<Button>();
+        //swordAttack = GameObject.Find("Sword_btn").GetComponent<Button>();
         sniperAttack = GameObject.Find("Sniper_btn").GetComponent<Button>();
         spellAttack = GameObject.Find("Spell_btn").GetComponent<Button>();
     }
@@ -48,22 +50,22 @@ public class GamePlayState : State
     public override void Tick()
     {
         base.Tick();
-        swordAttack.onClick.AddListener(Sword);
+        //bTSI.swordBtn.onClick.AddListener(Sword);
         sniperAttack.onClick.AddListener(Sniper);
         spellAttack.onClick.AddListener(Spell);
     }
 
-    private void Sword()
+    public void Sword()
     {
         combatMode = 1;
         _stateMachine.ChangeState(_stateMachine.CombatState);
     }
-    private void Sniper()
+    public void Sniper()
     {
         combatMode = 2;
         _stateMachine.ChangeState(_stateMachine.CombatState);
     }
-    private void Spell()
+    public void Spell()
     {
         combatMode = 3;
         _stateMachine.ChangeState(_stateMachine.CombatState);

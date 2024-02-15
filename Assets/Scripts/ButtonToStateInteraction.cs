@@ -5,17 +5,23 @@ using UnityEngine.UI;
 
 public class ButtonToStateInteraction : MonoBehaviour
 {
-    public static Button endlessMode;
+    public static Button swordBtn;
+    public static Button sniperBtn;
+    public static Button spellBtn;
 
-    GameSetupState setupState;
+    private GamePlayState playState;
 
     private void Awake()
     {
-        endlessMode = GameObject.Find("EndlessMode_btn").GetComponent<Button>();
+        swordBtn = GameObject.Find("Sword_btn").GetComponent<Button>();
+        //sniperBtn = GameObject.Find("Sniper_btn").GetComponent<Button>();
+        //spellBtn = GameObject.Find("Spell_btn").GetComponent<Button>();
     }
 
     private void Update()
     {
-        endlessMode.onClick.AddListener(setupState.GetOut);
+        swordBtn.onClick.AddListener(playState.Sword);
+        //sniperBtn.onClick.AddListener(playState.Sniper);
+        //spellBtn.onClick.AddListener(playState.Spell);
     }
 }

@@ -39,15 +39,10 @@ public class GameWinState : State
     {
         base.Tick();
         continueBtn.onClick.AddListener(continueCommand);
-        exitBtn.onClick.AddListener(exitCommand);
     }
 
     private void continueCommand()
     {
         _stateMachine.ChangeState(_stateMachine.PlayState);
-    }
-    private void exitCommand()
-    {
-        _stateMachine.ChangeState(_stateMachine.SetupState);
     }
 }

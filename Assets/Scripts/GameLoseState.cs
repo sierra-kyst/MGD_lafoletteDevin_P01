@@ -36,11 +36,5 @@ public class GameLoseState : State
     public override void Tick()
     {
         base.Tick();
-        exitBtn.onClick.AddListener(exitCommand);
-    }
-
-    private void exitCommand()
-    {
-        _stateMachine.ChangeState(_stateMachine.SetupState);
     }
 }

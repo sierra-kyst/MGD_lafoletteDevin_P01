@@ -8,7 +8,6 @@ public class GameFSM : StateMachineMB
     private GameController _controller;
 
     // state variables here
-    public GameSetupState SetupState { get; private set; }
     public GamePlayState PlayState { get; private set; }
     public GameWinState WinState { get; private set; }
     public GameLoseState LoseState { get; private set; }
@@ -19,7 +18,6 @@ public class GameFSM : StateMachineMB
     {
         _controller = GetComponent<GameController>();
         // state instantiation here
-        SetupState = new GameSetupState(this, _controller);
         PlayState = new GamePlayState(this, _controller);
         WinState = new GameWinState(this, _controller);
         LoseState = new GameLoseState(this, _controller);
@@ -29,6 +27,6 @@ public class GameFSM : StateMachineMB
 
     private void Start()
     {
-        ChangeState(SetupState);
+        ChangeState(PlayState);
     }
 }
