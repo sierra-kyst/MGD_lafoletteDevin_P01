@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameSetupState : State
 {
     private GameFSM _stateMachine;
     private GameController _controller;
+
+    public Button endlessMode;
 
     // this is our 'constructor', called when this state is created
     public GameSetupState(GameFSM stateMachine, GameController controller)
@@ -18,10 +21,8 @@ public class GameSetupState : State
     public override void Enter()
     {
         base.Enter();
-
-        Debug.Log("STATE: Game Setup");
-        Debug.Log("Load Save Data");
-        Debug.Log("Spawn Units");
+        Debug.Log("SetupState");
+        endlessMode = GameObject.Find("EndlessMode_btn").GetComponent<Button>();
     }
 
     public override void Exit()
@@ -38,5 +39,11 @@ public class GameSetupState : State
     {
         base.Tick();
         //_stateMachine.ChangeState(_stateMachine.PlayState);
+        endlessMode.onClick.AddListener(GetOut);
+    }
+
+    private void GetOut()
+    {
+        _stateMachine.ChangeState(_stateMachine.PlayState);
     }
 }

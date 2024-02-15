@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    public float enemyStartingHealth = 100;
-    private float enemyHealth;
+    //enemyStartingHealth is always defaulted to 100
+    public float enemyStartingHealth = 3;
+    public float enemyHealth;
+    //enemyStartingDamage is always defaulted to 10
     public float enemyStartingDamage = 10;
-    private float enemyDamage;
+    public float enemyDamage;
+    public int targetPartyMember;
 
     private void Awake()
     {

@@ -46,7 +46,7 @@ public class StateMachineMB : MonoBehaviour
         if (_previousState != null)
             ChangeState(_previousState);
         else
-            Debug.LogWarning("This is no previous state to change to!");
+            Debug.LogWarning("There is no previous state to change to!");
     }
 
     // virtual allows us to override in our FSM to check for
@@ -68,5 +68,5 @@ public class StateMachineMB : MonoBehaviour
     protected virtual void OnDestroy()
     {
         CurrentState?.Exit();
-    }    
+    }
 }

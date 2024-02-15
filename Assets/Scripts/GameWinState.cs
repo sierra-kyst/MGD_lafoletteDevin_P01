@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameWinState : State
 {
     private GameFSM _stateMachine;
     private GameController _controller;
+
+    public Button continueBtn;
+    public Button exitBtn;
 
     public GameWinState(GameFSM stateMachine, GameController controller)
     {
@@ -16,6 +20,9 @@ public class GameWinState : State
     public override void Enter()
     {
         base.Enter();
+        Debug.Log("WinState");
+        continueBtn = GameObject.Find("Continue_btn").GetComponent<Button>();
+        exitBtn = GameObject.Find("Exit_btn").GetComponent<Button>();
     }
 
     public override void Exit()
@@ -31,5 +38,16 @@ public class GameWinState : State
     public override void Tick()
     {
         base.Tick();
+        continueBtn.onClick.AddListener(continueCommand);
+        exitBtn.onClick.AddListener(exitCommand);
+    }
+
+    private void continueCommand()
+    {
+        _stateMachine.ChangeState(_stateMachine.PlayState);
+    }
+    private void exitCommand()
+    {
+        _stateMachine.ChangeState(_stateMachine.SetupState);
     }
 }

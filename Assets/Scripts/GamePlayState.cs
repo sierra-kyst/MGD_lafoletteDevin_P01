@@ -1,11 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GamePlayState : State
 {
     private GameFSM _stateMachine;
     private GameController _controller;
+    public GameObject playerTurnUI;
+
+    public Button swordAttack;
+    public Button sniperAttack;
+    public Button spellAttack;
+
+    public int combatMode;
+
+    public GameObject enemy;
 
     public GamePlayState(GameFSM stateMachine, GameController controller)
     {
@@ -16,10 +26,13 @@ public class GamePlayState : State
     public override void Enter()
     {
         base.Enter();
-
-        Debug.Log("STATE: Game Play");
-        Debug.Log("Listen for Player Inputs");
-        Debug.Log("Display Player HUD");
+        Debug.Log("PlayState");
+        //Instantiate(enemy);
+        playerTurnUI = GameObject.Find("PlayerTurn_pnl");
+        playerTurnUI.SetActive(true);
+        swordAttack = GameObject.Find("Sword_btn").GetComponent<Button>();
+        sniperAttack = GameObject.Find("Sniper_btn").GetComponent<Button>();
+        spellAttack = GameObject.Find("Spell_btn").GetComponent<Button>();
     }
 
     public override void Exit()
@@ -35,7 +48,24 @@ public class GamePlayState : State
     public override void Tick()
     {
         base.Tick();
-        Debug.Log("Checking for Win Condition");
-        Debug.Log("Checking for Lose Condition");
+        swordAttack.onClick.AddListener(Sword);
+        sniperAttack.onClick.AddListener(Sniper);
+        spellAttack.onClick.AddListener(Spell);
+    }
+
+    private void Sword()
+    {
+        combatMode = 1;
+        _stateMachine.ChangeState(_stateMachine.CombatState);
+    }
+    private void Sniper()
+    {
+        combatMode = 2;
+        _stateMachine.ChangeState(_stateMachine.CombatState);
+    }
+    private void Spell()
+    {
+        combatMode = 3;
+        _stateMachine.ChangeState(_stateMachine.CombatState);
     }
 }
