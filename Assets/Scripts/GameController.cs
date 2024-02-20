@@ -16,9 +16,6 @@ public class GameController : MonoBehaviour
     [SerializeField] private PartyManager partyManager;
     [SerializeField] private EnemyManager enemyManager;
 
-    [SerializeField] public Button swordBtn;
-    [SerializeField] public Button continueBtn;
-
     [SerializeField] public GameObject playerTurnUI;
     [SerializeField] public GameObject winUI;
     [SerializeField] public GameObject loseUI;
@@ -31,8 +28,6 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         CurrentState = State.Play;
-        swordBtn = GameObject.Find("Sword_btn").GetComponent<Button>();
-        //continueBtn = GameObject.Find("Continue_btn").GetComponent<Button>();
         playerTurnUI = GameObject.Find("PlayerTurn_pnl");
         winUI = GameObject.Find("Win_pnl");
         loseUI = GameObject.Find("Lose_pnl");
@@ -65,7 +60,6 @@ public class GameController : MonoBehaviour
     {
         //Debug.Log("Play");
         stateText.text = "Play";
-        swordBtn.onClick.AddListener(buttonPressed);
         if(buttonIsPressed == true)
         {
             playerTurnUI.SetActive(false);
@@ -112,7 +106,6 @@ public class GameController : MonoBehaviour
     {
         //Debug.Log("Win");
         stateText.text = "Win";
-        continueBtn.onClick.AddListener(buttonPressed);
         if(buttonIsPressed == true)
         {
             ChangeState(State.Play);
@@ -135,6 +128,7 @@ public class GameController : MonoBehaviour
         {
             return;
         }
+        buttonIsPressed = false;
         timer = 0;
         CurrentState = newState;
     }
@@ -142,10 +136,5 @@ public class GameController : MonoBehaviour
     public void buttonPressed()
     {
         buttonIsPressed = true;
-    }
-
-    public void buttonNotPressed()
-    {
-        buttonIsPressed = false;
     }
 }

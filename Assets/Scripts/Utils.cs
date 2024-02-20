@@ -6,5 +6,6 @@ public class Utils : MonoBehaviour
     {
         position.z = camera.nearClipPlane;
         return camera.ScreenToWorldPoint(position);
+        //camera.ScreenPointToRay;
     }
 }
