@@ -40,7 +40,7 @@ public class SwipeDetection : MonoBehaviour
         startTime = time;
         trail.SetActive(true);
         trail.transform.position = position;
-        coroutine = StartCoroutine(Trail());
+        coroutine = StartCoroutine("Trail");
     }
 
     private IEnumerator Trail()

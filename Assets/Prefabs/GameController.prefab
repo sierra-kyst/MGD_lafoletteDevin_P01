@@ -50,8 +50,6 @@ MonoBehaviour:
   CurrentState: 0
   partyManager: {fileID: 0}
   enemyManager: {fileID: 0}
-  swordBtn: {fileID: 0}
-  continueBtn: {fileID: 0}
   playerTurnUI: {fileID: 0}
   winUI: {fileID: 0}
   loseUI: {fileID: 0}

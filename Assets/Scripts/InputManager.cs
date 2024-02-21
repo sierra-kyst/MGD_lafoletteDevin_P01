@@ -49,7 +49,7 @@ public class InputManager : Singleton<InputManager>
     private void StartTouch(InputAction.CallbackContext context)
     {
         //Primary Position IS Touch Position
-        Debug.Log("Touch started " + touchControls.Touch.TouchPosition.ReadValue<Vector2>());
+        //Debug.Log("Touch started " + touchControls.Touch.TouchPosition.ReadValue<Vector2>());
         if (OnStartTouch != null)
         {
             OnStartTouch(touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.startTime);
@@ -59,7 +59,7 @@ public class InputManager : Singleton<InputManager>
 
     private void EndTouch(InputAction.CallbackContext context)
     {
-        Debug.Log("Touch ended");
+        //Debug.Log("Touch ended");
         if (OnEndTouch != null)
             OnEndTouch(touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.time);
             OnEndTouch(Utils.ScreenToWorld(mainCamera, touchControls.Touch.TouchPosition.ReadValue<Vector2>()), (float)context.time);
@@ -73,10 +73,10 @@ public class InputManager : Singleton<InputManager>
 
     private void Update()
     {
-        Debug.Log(UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches);
+        //Debug.Log(UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches);
         foreach(UnityEngine.InputSystem.EnhancedTouch.Touch touch in UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches)
         {
-            Debug.Log(touch.phase == UnityEngine.InputSystem.TouchPhase.Began);
+            //Debug.Log(touch.phase == UnityEngine.InputSystem.TouchPhase.Began);
         }
     }
 
