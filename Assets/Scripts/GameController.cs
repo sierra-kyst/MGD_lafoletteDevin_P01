@@ -15,23 +15,34 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private PartyManager partyManager;
     [SerializeField] private EnemyManager enemyManager;
+    private InputManager inputManager;
 
     [SerializeField] public GameObject playerTurnUI;
     [SerializeField] public GameObject winUI;
     [SerializeField] public GameObject loseUI;
+    [SerializeField] public GameObject enemy;
 
     [SerializeField] public TextMeshProUGUI stateText;
+    [SerializeField] public TextMeshProUGUI dodgeText;
 
     private bool buttonIsPressed = false;
     private int timer;
+    private int randomTimeStampStart;
+    private int randomTimeStampEnd;
 
     private void Awake()
     {
+        inputManager = InputManager.Instance;
+        randomTimeStampStart = Random.Range(0, 250);
+        randomTimeStampEnd = randomTimeStampStart + 50;
         CurrentState = State.Play;
         playerTurnUI = GameObject.Find("PlayerTurn_pnl");
-        winUI = GameObject.Find("Win_pnl");
-        loseUI = GameObject.Find("Lose_pnl");
+        //winUI = GameObject.Find("Win_pnl").GetComponent<GameObject>();
+        //loseUI = GameObject.Find("Lose_pnl").GetComponent<GameObject>();
         stateText = GameObject.Find("StateChangingText").GetComponent<TextMeshProUGUI>();
+        dodgeText = GameObject.Find("DodgeFlavorText").GetComponent<TextMeshProUGUI>();
+        //winUI.SetActive(false);
+        //loseUI.SetActive(false);
     }
 
     private void FixedUpdate()
@@ -60,6 +71,7 @@ public class GameController : MonoBehaviour
     {
         //Debug.Log("Play");
         stateText.text = "Play";
+        dodgeText.text = " ";
         if(buttonIsPressed == true)
         {
             playerTurnUI.SetActive(false);
@@ -77,11 +89,17 @@ public class GameController : MonoBehaviour
         //Debug.Log("Combat");
         stateText.text = "Combat";
         timer++;
+        //if screen is touched deal enemy damage
+        if(inputManager.touched == true)
+        {
+            enemyManager.enemyHealth -= 0.05f;
+            dodgeText.text = "Enemy's Health: " + enemyManager.enemyHealth;
+        }
         if (enemyManager.enemyHealth > 0 && timer >= 300)
         {
             ChangeState(State.Dodge);
         }
-        else if (enemyManager.enemyHealth <= 0 && timer >= 300)
+        else if (enemyManager.enemyHealth <= 0)
         {
             ChangeState(State.Win);
         }
@@ -92,9 +110,35 @@ public class GameController : MonoBehaviour
         //Debug.Log("Dodge");
         stateText.text = "Dodge";
         timer++;
-        if (partyManager.partyHealth > 0 && timer >= 300)
+        dodgeText.text = "Wait...";
+        //if screen is not pressed within time limit, deal damage to player
+        if (timer >= randomTimeStampStart && timer <= randomTimeStampEnd)
         {
-            ChangeState(State.Play);
+            dodgeText.text = "Tap Now!";
+            if (inputManager.touched == true)
+            {
+                dodgeText.text = "Dodged Enemy Attack!";
+                ChangeState(State.Play);
+            }
+        }
+        else if(timer < randomTimeStampStart && inputManager.touched == true)
+        {
+            dodgeText.text = "Dodged Too Early!";
+            partyManager._ninjaHealth -= Random.Range(5, 20);
+        }
+        else if(timer > randomTimeStampEnd && inputManager.touched == true)
+        {
+            dodgeText.text = "Dodged Too Late!";
+            partyManager._ninjaHealth -= Random.Range(5, 20);
+        }
+        else if (timer >= 300)
+        {
+            dodgeText.text = "Didn't Dodge in Time!";
+            partyManager._ninjaHealth -= Random.Range(5, 20);
+            if(timer >= 400)
+            {
+                ChangeState(State.Play);
+            }
         }
         else if (partyManager.partyHealth <= 0)
         {
@@ -108,11 +152,13 @@ public class GameController : MonoBehaviour
         stateText.text = "Win";
         if(buttonIsPressed == true)
         {
+            //winUI.SetActive(false);
             ChangeState(State.Play);
         }
         else
         {
             buttonIsPressed = false;
+            winUI.SetActive(true);
         }
     }
 
@@ -120,6 +166,7 @@ public class GameController : MonoBehaviour
     {
         //Debug.Log("Lose");
         stateText.text = "Lose";
+        loseUI.SetActive(true);
     }
 
     public void ChangeState(State newState)

@@ -16,6 +16,8 @@ public class InputManager : Singleton<InputManager>
     private TouchAction touchControls;
     private Camera mainCamera;
 
+    public bool touched = false;
+
     private void Awake()
     {
         touchControls = new TouchAction();
@@ -34,7 +36,7 @@ public class InputManager : Singleton<InputManager>
     private void OnDisable()
     {
         touchControls.Disable();
-        TouchSimulation.Enable();
+        TouchSimulation.Disable();
 
         UnityEngine.InputSystem.EnhancedTouch.Touch.onFingerDown -= FingerDown;
     }
@@ -54,21 +56,27 @@ public class InputManager : Singleton<InputManager>
         {
             OnStartTouch(touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.startTime);
             OnStartTouch(Utils.ScreenToWorld(mainCamera, touchControls.Touch.TouchPosition.ReadValue<Vector2>()), (float)context.startTime);
+            
         }
+        touched = true;
     }
 
     private void EndTouch(InputAction.CallbackContext context)
     {
         //Debug.Log("Touch ended");
         if (OnEndTouch != null)
+        {
             OnEndTouch(touchControls.Touch.TouchPosition.ReadValue<Vector2>(), (float)context.time);
             OnEndTouch(Utils.ScreenToWorld(mainCamera, touchControls.Touch.TouchPosition.ReadValue<Vector2>()), (float)context.time);
-
+            
+        }
+        touched = false;
     }
 
     private void FingerDown(Finger finger)
     {
         if (OnStartTouch != null) OnStartTouch(finger.screenPosition, Time.time);
+        
     }
 
     private void Update()
@@ -77,7 +85,9 @@ public class InputManager : Singleton<InputManager>
         foreach(UnityEngine.InputSystem.EnhancedTouch.Touch touch in UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches)
         {
             //Debug.Log(touch.phase == UnityEngine.InputSystem.TouchPhase.Began);
+            
         }
+        
     }
 
     public Vector2 PrimaryPosition()

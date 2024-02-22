@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 383558910904988496}
   - component: {fileID: 383558910904988497}
-  - component: {fileID: 7344420609362699580}
   - component: {fileID: 7524514345167772561}
   - component: {fileID: 3035101545645420156}
   m_Layer: 0
@@ -53,23 +52,8 @@ MonoBehaviour:
   playerTurnUI: {fileID: 0}
   winUI: {fileID: 0}
   loseUI: {fileID: 0}
+  enemy: {fileID: 0}
   stateText: {fileID: 0}
---- !u!114 &7344420609362699580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 383558910904988527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ed4e51b7b1749b4db7962f3d68c5786, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minimumDistance: 0.2
-  maximumTime: 1
-  directionThreshold: 0.9
-  trail: {fileID: 0}
 --- !u!114 &7524514345167772561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,7 +66,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cca3f15d8c4a256488201d682c830f63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSpeed: 4
 --- !u!114 &3035101545645420156
 MonoBehaviour:
   m_ObjectHideFlags: 0
