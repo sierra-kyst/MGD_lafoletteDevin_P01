@@ -93,7 +93,7 @@ public class GameController : MonoBehaviour
         if(inputManager.touched == true)
         {
             enemyManager.enemyHealth -= 0.05f;
-            dodgeText.text = "Enemy's Health: " + enemyManager.enemyHealth;
+            dodgeText.text = "Enemy's Health: " + enemyManager.roundedHealth;
         }
         if (enemyManager.enemyHealth > 0 && timer >= 300)
         {
@@ -140,7 +140,7 @@ public class GameController : MonoBehaviour
                 ChangeState(State.Play);
             }
         }
-        else if (partyManager.partyHealth <= 0)
+        else if (partyManager._ninjaHealth <= 0)
         {
             ChangeState(State.Lose);
         }
