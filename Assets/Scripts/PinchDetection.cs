@@ -4,14 +4,11 @@ using UnityEngine.InputSystem.Controls;
 
 public class PinchDetection : MonoBehaviour
 {
-    //[SerializeField] private float cameraSpeed = 4f;
     private TouchAction controls;
     private Coroutine zoomCoroutine;
-    //private Transform cameraTransform;
     private void Awake()
     {
         controls = new TouchAction();
-        //cameraTransform = Camera.main.transform;
     }
     private void OnEnable()
     {
@@ -52,13 +49,16 @@ public class PinchDetection : MonoBehaviour
             if(distance < previousDistance)
             {
                 //Activate Shield Function when I make one
-                /*Vector3 targetPosition = cameraTransform.position;
-                targetPosition.z -= 1;
-                cameraTransform.position = Vector3.Slerp(cameraTransform.position, targetPosition, Time.deltaTime * cameraSpeed);*/
+                ZoomIn();
             }    
             //Keep track of previous distance for next loop
             previousDistance = distance;
             yield return null;
         }
+    }
+
+    public void ZoomIn()
+    {
+
     }
 }

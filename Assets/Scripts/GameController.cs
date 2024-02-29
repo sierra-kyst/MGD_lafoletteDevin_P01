@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private EnemyManager enemyManager;
     private InputManager inputManager;
 
+
     [SerializeField] public GameObject playerTurnUI;
     [SerializeField] public GameObject winUI;
     [SerializeField] public GameObject loseUI;
@@ -37,12 +38,8 @@ public class GameController : MonoBehaviour
         randomTimeStampEnd = randomTimeStampStart + 50;
         CurrentState = State.Play;
         playerTurnUI = GameObject.Find("PlayerTurn_pnl");
-        //winUI = GameObject.Find("Win_pnl").GetComponent<GameObject>();
-        //loseUI = GameObject.Find("Lose_pnl").GetComponent<GameObject>();
         stateText = GameObject.Find("StateChangingText").GetComponent<TextMeshProUGUI>();
         dodgeText = GameObject.Find("DodgeFlavorText").GetComponent<TextMeshProUGUI>();
-        //winUI.SetActive(false);
-        //loseUI.SetActive(false);
     }
 
     private void FixedUpdate()
