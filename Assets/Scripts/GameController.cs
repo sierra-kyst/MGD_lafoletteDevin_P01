@@ -26,6 +26,12 @@ public class GameController : MonoBehaviour
     [SerializeField] public TextMeshProUGUI stateText;
     [SerializeField] public TextMeshProUGUI dodgeText;
 
+    [SerializeField] public ParticleSystem hitParticle;
+
+    [SerializeField] public AudioSource stateChangeSound;
+    [SerializeField] public AudioSource enemyDamageSound;
+    [SerializeField] public AudioSource playerDamageSound;
+
     private bool buttonIsPressed = false;
     private int timer;
     private int randomTimeStampStart;
@@ -90,6 +96,11 @@ public class GameController : MonoBehaviour
         if(inputManager.touched == true)
         {
             enemyManager.enemyHealth -= 0.05f;
+            if(hitParticle != null)
+            {
+                //Instantiate(hitParticle, Input.mousePosition);
+            }
+            enemyDamageSound.Play();
             dodgeText.text = "Enemy's Health: " + enemyManager.roundedHealth;
         }
         if (enemyManager.enemyHealth > 0 && timer >= 300)
@@ -122,18 +133,22 @@ public class GameController : MonoBehaviour
         {
             dodgeText.text = "Dodged Too Early!";
             partyManager._ninjaHealth -= Random.Range(5, 20);
+            playerDamageSound.Play();
         }
         else if(timer > randomTimeStampEnd && inputManager.touched == true)
         {
             dodgeText.text = "Dodged Too Late!";
             partyManager._ninjaHealth -= Random.Range(5, 20);
+            playerDamageSound.Play();
         }
-        else if (timer >= 300)
+        else if (timer > randomTimeStampEnd)
         {
             dodgeText.text = "Didn't Dodge in Time!";
-            partyManager._ninjaHealth -= Random.Range(5, 20);
+            
             if(timer >= 400)
             {
+                partyManager._ninjaHealth -= Random.Range(5, 20);
+                playerDamageSound.Play();
                 ChangeState(State.Play);
             }
         }
@@ -174,6 +189,7 @@ public class GameController : MonoBehaviour
         }
         buttonIsPressed = false;
         timer = 0;
+        stateChangeSound.Play();
         CurrentState = newState;
     }
 

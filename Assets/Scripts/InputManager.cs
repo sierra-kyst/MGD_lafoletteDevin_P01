@@ -13,10 +13,13 @@ public class InputManager : Singleton<InputManager>
     public event EndTouchEvent OnEndTouch;
     #endregion
 
-    private TouchAction touchControls;
+    public TouchAction touchControls;
     private Camera mainCamera;
 
     public bool touched = false;
+
+    private int timer;
+
 
     private void Awake()
     {
@@ -71,12 +74,16 @@ public class InputManager : Singleton<InputManager>
             
         }
         touched = false;
+        
     }
 
     private void FingerDown(Finger finger)
     {
-        if (OnStartTouch != null) OnStartTouch(finger.screenPosition, Time.time);
-        
+        if (OnStartTouch != null)
+        {
+            OnStartTouch(finger.screenPosition, Time.time);
+            
+        }
     }
 
     private void Update()
@@ -85,7 +92,6 @@ public class InputManager : Singleton<InputManager>
         foreach(UnityEngine.InputSystem.EnhancedTouch.Touch touch in UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches)
         {
             //Debug.Log(touch.phase == UnityEngine.InputSystem.TouchPhase.Began);
-            
         }
         
     }
