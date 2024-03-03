@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class GameController : MonoBehaviour
 {
@@ -25,8 +26,12 @@ public class GameController : MonoBehaviour
 
     [SerializeField] public TextMeshProUGUI stateText;
     [SerializeField] public TextMeshProUGUI dodgeText;
+    [SerializeField] public TextMeshProUGUI timerText;
 
-    [SerializeField] public ParticleSystem hitParticle;
+    [SerializeField] public GameObject hitParticle = null;
+    private Vector2 mousePos;
+
+    private Camera cam = null;
 
     [SerializeField] public AudioSource stateChangeSound;
     [SerializeField] public AudioSource enemyDamageSound;
@@ -34,23 +39,35 @@ public class GameController : MonoBehaviour
 
     private bool buttonIsPressed = false;
     private int timer;
+    private float visibleTimer;
+    private float roundedVisibleTimer;
     private int randomTimeStampStart;
     private int randomTimeStampEnd;
+    private float timerROF;
 
     private void Awake()
     {
         inputManager = InputManager.Instance;
+        CurrentState = State.Play;
+        hitParticle.SetActive(false);
         randomTimeStampStart = Random.Range(0, 250);
         randomTimeStampEnd = randomTimeStampStart + 50;
-        CurrentState = State.Play;
         playerTurnUI = GameObject.Find("PlayerTurn_pnl");
         stateText = GameObject.Find("StateChangingText").GetComponent<TextMeshProUGUI>();
         dodgeText = GameObject.Find("DodgeFlavorText").GetComponent<TextMeshProUGUI>();
+        timerText = GameObject.Find("TimerText").GetComponent<TextMeshProUGUI>();
+        hitParticle = GameObject.Find("Hit Particle").GetComponent<GameObject>();
+    }
+
+    private void Start()
+    {
+        cam = Camera.main;
     }
 
     private void FixedUpdate()
     {
-        switch(CurrentState)
+        roundedVisibleTimer = Mathf.Round(visibleTimer);
+        switch (CurrentState)
         {
             case State.Play:
                 DoPlayState();
@@ -75,6 +92,7 @@ public class GameController : MonoBehaviour
         //Debug.Log("Play");
         stateText.text = "Play";
         dodgeText.text = " ";
+        timerText.text = " ";
         if(buttonIsPressed == true)
         {
             playerTurnUI.SetActive(false);
@@ -92,16 +110,33 @@ public class GameController : MonoBehaviour
         //Debug.Log("Combat");
         stateText.text = "Combat";
         timer++;
+        visibleTimer -= 0.015f;
+        timerText.text = "" + roundedVisibleTimer;
         //if screen is touched deal enemy damage
-        if(inputManager.touched == true)
+        if (inputManager.touched == true)
         {
-            enemyManager.enemyHealth -= 0.05f;
-            if(hitParticle != null)
+            if(timerROF == 0)
             {
-                //Instantiate(hitParticle, Input.mousePosition);
+                enemyManager.enemyHealth -= 1;
+                if (hitParticle != null)
+                {
+                    mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                    hitParticle.SetActive(true);
+                    hitParticle.transform.position = new Vector3(mousePos.x, mousePos.y, 0f);
+                }
+                enemyDamageSound.Play();
+                dodgeText.text = "Enemy's Health: " + enemyManager.roundedHealth;
             }
-            enemyDamageSound.Play();
-            dodgeText.text = "Enemy's Health: " + enemyManager.roundedHealth;
+            timerROF += 0.02f;
+            if (timerROF >= 1)
+            {
+                timerROF = 0;
+            }
+        }
+        else if(inputManager.touched == false)
+        {
+            timerROF = 0;
+            hitParticle.SetActive(false);
         }
         if (enemyManager.enemyHealth > 0 && timer >= 300)
         {
@@ -118,7 +153,7 @@ public class GameController : MonoBehaviour
         //Debug.Log("Dodge");
         stateText.text = "Dodge";
         timer++;
-        dodgeText.text = "Wait...";
+        timerText.text = "";
         //if screen is not pressed within time limit, deal damage to player
         if (timer >= randomTimeStampStart && timer <= randomTimeStampEnd)
         {
@@ -134,18 +169,17 @@ public class GameController : MonoBehaviour
             dodgeText.text = "Dodged Too Early!";
             partyManager._ninjaHealth -= Random.Range(5, 20);
             playerDamageSound.Play();
+            ChangeState(State.Play);
         }
         else if(timer > randomTimeStampEnd && inputManager.touched == true)
         {
             dodgeText.text = "Dodged Too Late!";
-            partyManager._ninjaHealth -= Random.Range(5, 20);
-            playerDamageSound.Play();
         }
         else if (timer > randomTimeStampEnd)
         {
             dodgeText.text = "Didn't Dodge in Time!";
             
-            if(timer >= 400)
+            if(timer >= 300)
             {
                 partyManager._ninjaHealth -= Random.Range(5, 20);
                 playerDamageSound.Play();
@@ -155,6 +189,10 @@ public class GameController : MonoBehaviour
         else if (partyManager._ninjaHealth <= 0)
         {
             ChangeState(State.Lose);
+        }
+        else
+        {
+            dodgeText.text = "Wait...";
         }
     }
 
@@ -189,6 +227,8 @@ public class GameController : MonoBehaviour
         }
         buttonIsPressed = false;
         timer = 0;
+        visibleTimer = 5;
+        timerROF = 0;
         stateChangeSound.Play();
         CurrentState = newState;
     }
