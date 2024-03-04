@@ -28,10 +28,7 @@ public class GameController : MonoBehaviour
     [SerializeField] public TextMeshProUGUI dodgeText;
     [SerializeField] public TextMeshProUGUI timerText;
 
-    [SerializeField] public GameObject hitParticle = null;
-    private Vector2 mousePos;
-
-    private Camera cam = null;
+    [SerializeField] public ParticleSystem hitParticle;
 
     [SerializeField] public AudioSource stateChangeSound;
     [SerializeField] public AudioSource enemyDamageSound;
@@ -49,19 +46,12 @@ public class GameController : MonoBehaviour
     {
         inputManager = InputManager.Instance;
         CurrentState = State.Play;
-        hitParticle.SetActive(false);
         randomTimeStampStart = Random.Range(0, 250);
         randomTimeStampEnd = randomTimeStampStart + 50;
         playerTurnUI = GameObject.Find("PlayerTurn_pnl");
         stateText = GameObject.Find("StateChangingText").GetComponent<TextMeshProUGUI>();
         dodgeText = GameObject.Find("DodgeFlavorText").GetComponent<TextMeshProUGUI>();
         timerText = GameObject.Find("TimerText").GetComponent<TextMeshProUGUI>();
-        hitParticle = GameObject.Find("Hit Particle").GetComponent<GameObject>();
-    }
-
-    private void Start()
-    {
-        cam = Camera.main;
     }
 
     private void FixedUpdate()
@@ -120,9 +110,8 @@ public class GameController : MonoBehaviour
                 enemyManager.enemyHealth -= 1;
                 if (hitParticle != null)
                 {
-                    mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-                    hitParticle.SetActive(true);
-                    hitParticle.transform.position = new Vector3(mousePos.x, mousePos.y, 0f);
+                    //Instantiate(hitParticle, enemy.transform.position, enemy.transform.rotation);
+                    hitParticle.Play();
                 }
                 enemyDamageSound.Play();
                 dodgeText.text = "Enemy's Health: " + enemyManager.roundedHealth;
@@ -136,7 +125,6 @@ public class GameController : MonoBehaviour
         else if(inputManager.touched == false)
         {
             timerROF = 0;
-            hitParticle.SetActive(false);
         }
         if (enemyManager.enemyHealth > 0 && timer >= 300)
         {
